@@ -1,0 +1,62 @@
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1200px-Telegram_logo.svg.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    #cont {
+      margin-top: 200px;
+    }
+
+    .input-field {
+      margin-bottom: 20px;
+    }
+
+    .code-input {
+      padding: 10px;
+      font-size: 16px;
+      margin-top:10px;
+    }
+
+    .button {
+      padding: 5px 5px;
+      font-size: 16px;
+    }
+   #phone-number {
+       width:150px;
+       margin-right:5px;
+   }
+
+    .disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .timer {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .phone-input {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+    }
+
+    .phone-input input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      }
+
+    .phone-input input:focus {
+      outline: none;
+     border-color: #0078d4;
+     }
+
+    #country-code {
+     background-color: #f0f0f0;
+     width: 60px;
+     }
