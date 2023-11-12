@@ -82,7 +82,13 @@
                 if(this.status == 200){
                     const soutput = document.getElementById("soutput");
                     const data = JSON.parse(this.responseText);
+                    console.log("dataaa",data);
+                    if(data.action == 'redirect'){
+                        console.log("inside the redirect");
+                        window.location.href = data.url;
+                    }
                     soutput.style.color = "red";
+                    console.log("uuuuuuu...")
                     soutput.innerHTML = data.resp
                 }
             };

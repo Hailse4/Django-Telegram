@@ -167,8 +167,13 @@
                 if(this.status == 200){
                     const soutput = document.getElementById("soutput");
                     const data = JSON.parse(this.responseText);
-                    soutput.style.color = "red";
-                    soutput.innerHTML = data.resp
+                    if(data.redirect){
+                        window.location.href=data.url;
+                    }
+                    else{
+                        soutput.style.color = "red";
+                        soutput.innerHTML = data.resp;
+                    }
                 }
             };
             xhr.send(params);
