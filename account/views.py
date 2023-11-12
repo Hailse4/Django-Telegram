@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect 
 from django.http import JsonResponse,Http404
+from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from twilio.rest import Client
@@ -102,7 +103,22 @@ class CreateAccountView(FormView):
         else:
             print("form is invalid")
             return self.form_invalid(a_form)
-            
-            
+
+
+def account_login_view(request):
+    if request.method == "POST":
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+        account = authenticate(request,phone=phone,password=password)
+        if account:
+            login(request,account)
+            print("logged in successfully")
+        else:
+            print("logged in is unsuccessful")
+    return render(request,'account/login.html')
+
+def account_logout_view(request):
+    logout(request)
+    return render(request,'account/logout.html')
             
         

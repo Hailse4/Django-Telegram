@@ -1,0 +1,26 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{%static 'account/login.css'%}">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    </head>
+<body>
+    <div class="login-container">
+        <form method="POST">
+            {%csrf_token%}
+            <div class="input-group">
+                <input type="text" value="+251" readonly>
+                <input type="tel" name="phone" id="phone" placeholder="Phone number" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+            </div>
+            <div class="input-group">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
