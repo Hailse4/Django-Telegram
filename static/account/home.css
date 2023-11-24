@@ -1,0 +1,111 @@
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-bar {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .tel-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chat-button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tabs {
+            display: flex;
+            margin: 20px 0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: #0078d4;
+            color: white;
+        }
+
+        .tab-content {
+            /*border: 1px solid #ccc;*/
+            padding: 20px;
+            width:100%;
+        }
+
+        @media (max-width: 768px) {
+            .search-bar, .chat-bar, .tabs {
+                flex-direction: column;
+            }
+
+            .search-button, .chat-button, .tab {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar, .chat-bar {
+                flex-direction: row;
+            }
+
+            .search-input, .tel-input {
+                flex: 2;
+            }
+
+            .search-button, .chat-button {
+                flex: 1;
+                margin-left:15px;
+            }
+
+            .tabs {
+                flex-direction: row;
+                overflow-x: scroll;
+            }
+        }
+  

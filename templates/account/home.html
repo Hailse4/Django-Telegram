@@ -1,0 +1,94 @@
+
+{%load static%}
+<html>
+    <head>
+     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+     <link rel="stylesheet" href="{%static 'account/home.css'%}">
+     <link rel="stylesheet" href="{%static 'account/chatitem.css'%}">
+    </head>
+<body>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search...">
+            <button class="search-button">Search</button>
+        </div>
+        <div class="chat-bar">
+            <form method="post" action="{%url 'chatroom'%}">
+                {%csrf_token%}
+                <input type="tel" name="chatphone" class="tel-input" placeholder="Enter your phone number...">
+                <button class="chat-button">Chat</button>
+            </form>
+        </div>
+        <div class="tabs">
+            <div class="tab active" id="chat-tab">Chat</div>
+            <div class="tab" id="group-tab">Group</div>
+        </div>
+        <div class="tab-content" id="chat-content">
+            <!-- Chat content goes here -->
+            {%for item in chatlist%}
+            <div class="chat-item" id="chatitem_{{item.id}}">
+            <div class="chat-header">
+             {%if item.sender == user%}
+                <div class="chat-username">{{item.receiver.username}}</div>
+             {%else%}
+                <div class="chat-username">{{item.sender.username}}</div>
+             {%endif%}
+             <div class="chat-time">{{item.time}}</div>
+           </div>
+          <div class="chat-message">{{item.message}}</div>
+          <div class="chat-unread">2</div>
+       </div>
+            {%endfor%}
+        </div>
+        <div class="tab-content" id="group-content" style="display: none;">
+            <!-- Group content goes here -->
+            	
+        </div>
+    </div>
+    <script>
+        const url = "ws://"+window.location.host+"/ws/chatlist/";
+        const socket = new WebSocket(url);
+        const chatContent = document.getElementById('chat-content');
+        socket.onmessage = function (e){
+            const data = JSON.parse(e.data);
+            console.log("Chat item id",data.chatlist_id);
+            const existChatItem = document.getElementById("chatitem_"+data.chatlist_id);
+            console.log("exist item",existChatItem);
+            if (existChatItem){
+                const userName = existChatItem.querySelector('.chat-header').querySelector('.chat-username');     userName.innerHTML = data.username;
+                const time = existChatItem.querySelector('.chat-header').querySelector('.chat-time');
+                time.innerHTML = data.time;
+                const chatMessage = existChatItem.querySelector('.chat-message');
+                chatMessage.innerHTML = data.message;
+                const chatUnread = existChatItem.querySelector('.chat-unread');
+                chatUnread.innerHTML = 2
+            }
+            else{
+                const chatItem = document.createElement('div');
+                chatItem.className = "chat-item";
+                const chatHeader = document.createElement('div');
+                chatHeader.className = "chat-header";
+                const chatUsername = document.createElement('div');
+                const chatTime = document.createElement('div');
+                chatUsername.innerHTML = data.username;
+                chatUsername.className = "chat-username";
+                chatTime.innerHTML = data.time;
+                chatTime.className = "chat-time";
+                chatHeader.append(chatUsername);
+                chatHeader.append(chatTime);
+                chatItem.append(chatHeader);
+                const chatMessage = document.createElement('div');
+                const chatUnread = document.createElement('div');
+                chatMessage.innerHTML = data.message;
+                chatMessage.className = "chat-message";
+                chatUnread.innerHTML = 2
+                chatUnread.className = "chat-unread";
+                chatItem.append(chatMessage);
+                chatItem.append(chatUnread);
+                chatContent.prepend(chatItem);
+            }
+            
+        };
+    </script>
+</body>
+</html>

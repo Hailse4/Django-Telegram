@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     
     #my apps
     'account',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +53,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #my middleware
+    #'chat.chat_middleware.ChatRoomMiddleware',
+    #'chat.chat_middleware.AsyncChatRoomMiddleware',
 ]
 
 ROOT_URLCONF = 'telegram.urls'
@@ -71,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'telegram.wsgi.application'
+ASGI_APPLICATION = 'telegram.asgi.application'
 
 
 # Database
@@ -81,6 +88,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND':'channels.layers.InMemoryChannelLayer',
+        'CONFIG':{},
+    },
 }
 
 AUTHENTICATION_BACKENDS = [

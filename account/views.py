@@ -3,9 +3,12 @@ from django.http import JsonResponse,Http404
 from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin 
+from django.views.generic.base import View
 from twilio.rest import Client
 from .getverifycode import ExpiringDict
 from .models import AccountModel 
+from chat.models import ChatListModel 
 from .forms import AccountForm
 import random 
 import bcrypt
@@ -121,4 +124,14 @@ def account_logout_view(request):
     logout(request)
     return render(request,'account/logout.html')
             
-        
+    
+    
+class HomeView(LoginRequiredMixin,View):
+    template_name = "account/home.html"
+    login_url = reverse_lazy('login')
+    extra_context = {'chatroom':reverse_lazy('chatroom')}
+    def get(self,request,*args,**kwargs):
+        sender = ChatListModel.objects.filter(sender=request.user)
+        receiver = ChatListModel.objects.filter(receiver=request.user)
+        chatlist = sender.union(receiver)
+        return render(request,self.template_name,context={"chatlist":chatlist})

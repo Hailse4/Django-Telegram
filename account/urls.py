@@ -6,5 +6,6 @@ urlpatterns = [
     path("create/",views.CreateAccountView.as_view(),name="create-account"),
     path("login/",views.account_login_view,name="login"),
     path('logout/',views.account_logout_view,name="logout"),
+    path("",views.HomeView.as_view(),name="home"),
 ]
 

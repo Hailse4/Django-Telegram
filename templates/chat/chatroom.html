@@ -1,0 +1,100 @@
+{%load static%}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'chat/chatroom.css'%}">
+</head>
+<body>
+
+        <div class="main">
+            <div class="main-header">
+                <h3>{{receiver.username}}</h3>
+                <button>⋮</button>
+            </div>
+            <div id="main-content" class="main-content">
+                {%for item in chats%}
+                {%if item.receiver == sender%}
+                <div class="message received">
+                    <img src="user1.jpg" alt="User 1">
+                    <div class="message-bubble">
+                        <p>{{item.message}}</p>
+                        <span>10:00 AM</span>
+                    </div>
+                </div>
+                {%else%}
+                <div class="message sent">
+                    <img src="user6.jpg" alt="User 6">
+                    <div class="message-bubble">
+                        <p>{{item.message}}</p>
+                        <span>10:05 AM</span>
+                    </div>
+                </div>
+                {%endif%}
+                {%endfor%}
+
+            </div>
+            <div class="main-footer">
+                <input type="text" id="msginput" placeholder="Type a message...">
+                <button id="sendbtn">Send</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const mainContent = document.getElementById('main-content')
+        const sendBtn = document.getElementById('sendbtn');
+        const url = "ws://"+window.location.host+"/ws/chatroom/";
+        const websocket = new WebSocket(url);
+        websocket.onmessage = function (e){
+            const data = JSON.parse(e.data);
+            const msgRe = document.createElement('div');
+            const msgReImg = document.createElement('img');
+            const msgReBubble = document.createElement('div');
+            const msgRep = document.createElement('p');
+            const msgReSpan = document.createElement('span');
+            msgRe.className = 'message received';
+            msgReImg.src = 'user1.jpg';
+            msgReImg.alt = 'user 1';
+            msgReBubble.className = 'message-bubble';
+            msgRep.innerHTML = data.message;
+            msgReSpan.innerHTML = data.hour;
+            msgRe.append(msgReImg);
+            msgReBubble.append(msgRep);
+            msgReBubble.append(msgReSpan);
+            msgRe.append(msgReBubble);
+            mainContent.append(msgRe);
+            
+        }
+        sendBtn.onclick = function sendMessage(e){
+            const msgInput = document.getElementById("msginput");
+            const msgValue = msgInput.value;
+            data = {
+                'receiver_id':{{receiver.id}},
+                'sender_id':{{sender.id}},
+                 'message': msgValue,
+                }
+            msgInput.value = '';
+            json_data = JSON.stringify(data);
+            websocket.send(json_data);
+            const msgSent = document.createElement("div");
+            const msgSentImg = document.createElement('img');
+            const msgSentBubble = document.createElement('div');
+            const msgSentp = document.createElement("p");
+            const msgSentSpan = document.createElement('span');
+            msgSent.className = 'message sent';
+            msgSentImg.src = 'user6.jpg';
+            msgSentImg.alt = 'user 6';
+            msgSentBubble.className = 'message-bubble';
+            msgSent.append(msgSentImg);
+            msgSentp.innerHTML = msgValue;
+            msgSentBubble.append(msgSentp);
+            const currentDate = new Date();
+            msgSentSpan.innerHTML = currentDate.getHours();
+            msgSentBubble.append(msgSentSpan);
+            msgSent.append(msgSentBubble);
+            mainContent.append(msgSent);
+        
+        }
+    </script>
+</body>
+</html>
+

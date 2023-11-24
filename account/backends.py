@@ -15,6 +15,6 @@ class AccountModelAuthBackend(BaseBackend):
         try:
             account = AccountModel.objects.get(pk=user_id)
             return account
-        except DoesNotExist:
+        except AccountModel.DoesNotExist:
             return None
         
